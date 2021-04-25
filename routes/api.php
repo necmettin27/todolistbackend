@@ -16,17 +16,26 @@ use \App\Http\Controllers\AuthController;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::middleware('auth:api')->group(function () {
+
+    Route::middleware('auth:api')->get('/user', function (Request $request) {
+        return $request->user();
+    
+    });
+
+    Route::get('/todos',[TodosController::class,'index']);
+    Route::post('/todos',[TodosController::class,'store']);
+    Route::put('/todos/{todo}',[TodosController::class,'update']);
+    Route::put('/todosCheckAll',[TodosController::class,'updateAll']);
+    Route::delete('/todos/{todo}',[TodosController::class,'destroy']);
+
+    Route::post('logout',[AuthController::class,'logout']);
 
 });
 
+
+
 Route::post('login',[AuthController::class,'login']);
 Route::post('register',[AuthController::class,'register']);
-Route::post('logout',[AuthController::class,'logout']);
 
-Route::get('/todos',[TodosController::class,'index']);
-Route::post('/todos',[TodosController::class,'store']);
-Route::put('/todos/{todo}',[TodosController::class,'update']);
-Route::put('/todosCheckAll',[TodosController::class,'updateAll']);
-Route::delete('/todos/{todo}',[TodosController::class,'destroy']);
+

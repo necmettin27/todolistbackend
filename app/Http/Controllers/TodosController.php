@@ -4,12 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Todo;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TodosController extends Controller
 {
     public function index()
     {
-        return Todo::all();
+        return Todo::where('user_id', Auth::user()->id)->get();
     }
 
     public function store(Request $request)
@@ -20,6 +21,7 @@ class TodosController extends Controller
         ]);
 
         $todo = Todo::create([ 
+            'user_id' => Auth::user()->id,
             'title' => $request->title,
             'completed' => $request->completed,
         ]);

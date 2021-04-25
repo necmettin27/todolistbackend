@@ -15,11 +15,15 @@ class CreateTodosTable extends Migration
     {
         Schema::create('todos', function (Blueprint $table) {
             $table->id();
+            $table->integer('user_id');
             $table->text('title');
             $table->boolean('completed')->default(false);
             $table->timestamps();
         });
+
     }
+
+
 
     /**
      * Reverse the migrations.
