@@ -21,3 +21,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::get('/todos',[TodosController::class,'index']);
 Route::post('/todos',[TodosController::class,'store']);
+Route::put('/todos/{todo}',[TodosController::class,'update']);
+Route::delete('/todos/{todo}',[TodosController::class,'destroy']);
