@@ -45,7 +45,7 @@ class TodosController extends Controller
             'completed' => 'required|boolean',
         ]);
 
-        Todo::where('user_id', auth()->user()->id)->update($data);
+        Todo::query()->update($data);
 
         return response()->json('Updated', 200);
     }
@@ -57,31 +57,4 @@ class TodosController extends Controller
         return response()->json('Başarıyla silindi', 200);
     }
 
-    public function destroyCompleted(Request $request)
-    {
-        // [6,9] todo ids we are passing in and want to delete
-        // [5,6,9] all of the users todo ids
-
-        $todosToDelete = $request->todos;
-
-        $userTodoIds = auth()->user()->todos->map(function ($todo) {
-            return $todo->id;
-        });
-
-        $valid = collect($todosToDelete)->every(function ($value, $key) use ($userTodoIds) {
-            return $userTodoIds->contains($value);
-        });
-
-        if (!$valid) {
-            return response()->json('Unauthorized', 401);
-        }
-
-        $request->validate([
-            'todos' => 'required|array',
-        ]);
-
-        Todo::destroy($request->todos);
-
-        return response()->json('Deleted', 200);
-    }
 }
